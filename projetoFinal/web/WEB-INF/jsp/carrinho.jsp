@@ -29,25 +29,25 @@
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
 
-                           <li class="nav-item">
-                            <i class="fa-solid fa-house"></i>
-                            <a class="navbar-brand" href="./Index">Home</a>
-                        </li>
+                            <li class="nav-item">
+                                <i class="fa-solid fa-house"></i>
+                                <a class="navbar-brand" href="./Index">Home</a>
+                            </li>
 
-                        <li class="nav-item">
-                            <i class="fa-solid fa-glasses"></i>
-                            <a class="navbar-brand" aria-current="page" href="./Sobrenos">Sobre Nós</a>
-                        </li>
-                        <li class="nav-item">
-                            <i class="fa-solid fa-right-to-bracket"></i>
-                            <a class="navbar-brand" href="./Cadastro">Login</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <i class="fa-solid fa-hand-point-up"></i>
-                            <a class="navbar-brand dropdown-toggle" href="#" role="button"
-                               data-bs-toggle="dropdown" aria-expanded="false">
-                                Departamentos
-                            </a>
+                            <li class="nav-item">
+                                <i class="fa-solid fa-glasses"></i>
+                                <a class="navbar-brand" aria-current="page" href="./Sobrenos">Sobre Nós</a>
+                            </li>
+                            <li class="nav-item">
+                                <i class="fa-solid fa-right-to-bracket"></i>
+                                <a class="navbar-brand" href="./Cadastro">Login</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <i class="fa-solid fa-hand-point-up"></i>
+                                <a class="navbar-brand dropdown-toggle" href="#" role="button"
+                                   data-bs-toggle="dropdown" aria-expanded="false">
+                                    Departamentos
+                                </a>
                                 <ul class="dropdown-menu">
                                     <li><a class="dropdown-item" href="./Categoria?id=1">Frios</a></li>
                                     <li><a class="dropdown-item" href="./Categoria?id=2">Carnes</a></li>
@@ -89,50 +89,84 @@
         </header>
 
         <main>
-            <h1>Carrinho</h1>
+            <div class="enderecos">
+                <h2>Calcular frete</h2>
+                <form action="calcular" enctype="multipart/form-data" method="post" >
 
+                    <h2>Estado:</h2>
+                    <input type="text" name="estado" id="imagem">
+
+                    <h2>Cidade:</h2>
+                    <input type="text" name="cidade">
+
+                    <h2>Rua:</h2>
+                    <input type="text" name="rua">
+
+                    <h2>Cep:</h2>
+                    <input type="text" name="cep">
+
+                    <h2>Número:</h2>
+                    <input type="text" name="numero">
+                    <h2>Complemento:</h2>
+                    <input type="text" name="complemento">
+                    <br>
+                    <input type="hidden"  name="id" value="${usuario.idUsuario}">
+                    <input type="submit" value="Enviar" class="btn-comprar" >
+                </form>
+
+
+
+            </div>
+
+            <h1>Carrinho</h1>                            
             <div class="containerr">
-                <c:forEach items="${carrinhos}" var="carrinho">
-                    <div id="${carrinho.idProdutos}" class="produto">
+                <c:forEach items="${produtos}" var="produto">
+                    <c:forEach items="${carrinhos}" var="carrinho"> 
 
-                       
-                        <div class="carr">
-                           
-                          
+                        <div id="${carrinho.idProdutos}" class="produto">
+
+
+                            <div class="carr">
+                                 <h2>${produto.nome}</h2>
+                                <img src="data:image/png;base64,${produto.imagemBase64}" alt="${produto.nome}"
+                            </div>
+
+
+
                         </div>
                         <br>
                         <p>R$ ${carrinho.quantidadeCarrinho}</p>
 
-                        <button type="submit" class="btn btn-comprar" data-id="${carrinho.idProdutos}"
-                               
-                                data-quantidade=1 id="comprar">
-                            <i class="fa-solid fa-box"></i> Adicionar arrinho
-                        </button>
+                        
 
-                    </div>                               
-                </c:forEach>                              
-            </div>
-             <a href="./FinalCompra"><input type="submit" value="comprar"></a>
-            
-            <form id="form-comprar" action="enviarb" method="post" enctype="multipart/form-data"
-                  style="display: none;">
-                <input type="hidden" name="idProduto" id="idProduto">
-                <input type="hidden" name="descricao" id="descricao">
-                <input type="hidden" name="nome" id="nome">
-                <input type="hidden" name="preco" id="preco">
-                <input type="file" name="imagem" id="imagem">
-                <input type="hidden" name="quantidade" id="quantidade">
-            </form>
-        </main>
+                    </div>  
 
-        <footer>
-            <p> Todos Os Direitos Reservados de: Tiago Mattano Nunes dos Santos ©️</p>
-        </footer>
+                </c:forEach>  
+            </c:forEach>                            
+        </div>  
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-                integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-        crossorigin="anonymous"></script>
-        <script src="js/punico.js"></script>
-    </body>
+        </div>
+        <a href="./FinalCompra"><input type="submit" value="comprar"></a>
+
+        <form id="form-comprar" action="enviarb" method="post" enctype="multipart/form-data"
+              style="display: none;">
+            <input type="hidden" name="idProduto" id="idProduto">
+            <input type="hidden" name="descricao" id="descricao">
+            <input type="hidden" name="nome" id="nome">
+            <input type="hidden" name="preco" id="preco">
+            <input type="file" name="imagem" id="imagem">
+            <input type="hidden" name="quantidade" id="quantidade">
+        </form>
+    </main>
+
+    <footer>
+        <p> Todos Os Direitos Reservados de: Tiago Mattano Nunes dos Santos ©️</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+    <script src="js/punico.js"></script>
+</body>
 
 </html>

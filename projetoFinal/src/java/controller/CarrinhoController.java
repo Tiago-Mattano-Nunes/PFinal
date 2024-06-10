@@ -21,15 +21,22 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 import model.Dao.CadastroDAO;
 import model.Dao.CarrinhoDAO;
+import model.Dao.EnderecosDAO;
+import model.Dao.ProdutosDAO;
 import model.bean.Cadastro;
 import model.bean.Carrinho;
+import model.bean.Enderecos;
+import model.bean.Produtos;
 
-@WebServlet(urlPatterns = "/enviarb")
+
+@WebServlet(urlPatterns = "/calcular")
 @MultipartConfig
 public class CarrinhoController extends HttpServlet {
 
-    Carrinho produto = new Carrinho();
-    CarrinhoDAO produtoDao = new CarrinhoDAO();
+    Enderecos objProduto = new Enderecos();
+    EnderecosDAO objProdutoDao = new EnderecosDAO();
+
+ 
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -49,6 +56,10 @@ public class CarrinhoController extends HttpServlet {
         Cadastro cadastro = new Cadastro();
         CadastroDAO cadastrodao = new CadastroDAO();
 
+        ProdutosDAO produto2 = new ProdutosDAO();
+        List<Produtos> produtos = produto2.ler();
+        request.setAttribute("produtos", produtos);
+
         Cookie[] cookies = request.getCookies();
         for (Cookie cookie : cookies) {
             if (cookie.getName().equals("loginManter")) {
@@ -62,6 +73,7 @@ public class CarrinhoController extends HttpServlet {
         dispatcher.forward(request, response);
 
     }
+
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -89,8 +101,32 @@ public class CarrinhoController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String action = request.getServletPath();
+        if (action.equals("/calcular")) {
+            user(request, response);
+        } else {
+            processRequest(request, response);
+        }
+
     }
+
+    protected void user(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        PrintWriter sout = response.getWriter();
+        objProduto.setRua(request.getParameter("rua"));
+        objProduto.setNumero(request.getParameter("numero"));
+        objProduto.setCidade(request.getParameter("cidade"));
+        objProduto.setCep(request.getParameter("cep"));
+        objProduto.setEstado(request.getParameter("estado"));
+        objProduto.setComplemento(request.getParameter("complemento"));
+        objProduto.setIdUsuario(Integer.parseInt(request.getParameter("id")));
+
+        objProdutoDao.create(objProduto);
+        response.sendRedirect("./Carrinho?id=" + Integer.parseInt(request.getParameter("id")));
+
+    }
+
+
 
     @Override
     public String getServletInfo() {

@@ -24,8 +24,7 @@ import model.Dao.EnderecosDAO;
 import model.bean.Carrinho;
 import model.bean.Enderecos;
 
-@WebServlet(urlPatterns = "/calcular")
-@MultipartConfig
+
 public class FinalCompraController extends HttpServlet {
 
     Enderecos objProduto = new Enderecos();
@@ -87,40 +86,11 @@ public class FinalCompraController extends HttpServlet {
      @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String action = request.getServletPath();
-        if (action.equals("/calcular")) {
-            user(request, response);
-        } else {
-            processRequest(request, response);
-        }
+        
 
     }
     
-    protected void user(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        PrintWriter sout = response.getWriter();
-        objProduto.setRua(request.getParameter("rua"));
-        objProduto.setNumero(request.getParameter("numero"));
-        objProduto.setCidade(request.getParameter("cidade"));
-        objProduto.setCep(request.getParameter("cep"));
-        objProduto.setEstado(request.getParameter("estado"));
-         objProduto.setComplemento(request.getParameter("complemento"));
-        objProduto.setIdUsuario(Integer.parseInt(request.getParameter("id")));
-        
-        if (objProduto.getRua().trim().equals("") 
-                || objProduto.getCidade().trim().equals("")                 
-                || objProduto.getNumero().trim().equals("")) {
-            sout.println("<script type=\"text/javascript\">");
-            sout.println("alert('Por favor, preencha todos os campos.');");
-            sout.println("window.location.href = './FinalCompra';");
-            sout.println("</script>");
-        } else {
-         
-            objProdutoDao.create(objProduto);
-            response.sendRedirect("./FinalCompra");
-        }
-
-    }
+   
 
     @Override
     public String getServletInfo() {
